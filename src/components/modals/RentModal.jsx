@@ -68,7 +68,7 @@ function RentModal() {
   setIsLoading(true);
     console.log('d',data)
 
-    axios.post('http://localhost:5000/listings', data)
+    axios.post('https://dianikonnect.onrender.com/listings', data)
     .then(() => {
       toast.success('Listing created!');
       router.refresh();
