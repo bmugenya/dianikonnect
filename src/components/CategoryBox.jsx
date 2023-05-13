@@ -8,7 +8,7 @@ function CategoryBox({ icon: Icon,label, selected}) {
   const history = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  console.log(searchParams)
+
 
 
 

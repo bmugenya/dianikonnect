@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import ListingClient from "../components/listing/ListingClient";
-import useAuthListener from '../hooks/use-auth-listener'
 import { useDispatch, useSelector } from 'react-redux'
 import { getListingAsync } from "../features/listing/listingActions";
+import { getReservationAsync } from "../features/reservation/reservationActions";
 import { useParams } from "react-router-dom";
 
 
@@ -13,11 +13,13 @@ const dispatch = useDispatch();
 
     const { listing } = useSelector((state) => state.listing)
 
- const { user, loading } = useAuthListener()
+ const { currentUser } = useSelector((state) => state.currentUser)
 
     useEffect(() => {
        
         dispatch(getListingAsync(id))
+         dispatch(getReservationAsync(id))
+  
     },[])
 
 
@@ -27,7 +29,8 @@ const dispatch = useDispatch();
     <>
       <ListingClient
         listing={listing}
-        currentUser={user}
+        currentUser={currentUser}
+        
       />
     </>
   )

@@ -1,19 +1,10 @@
-import Router from "./helpers/router"
-import { getListingsAsync } from "./features/listings/listingsActions";
-import { useEffect } from "react";
-import { useDispatch } from 'react-redux'
+import Router from "./router/router"
+
 
 function App() {
-    const dispatch = useDispatch();
- 
-  useEffect(() => {
-    dispatch(getListingsAsync())
-  },[])
 
   return (
-    <>
     <Router />
-    </>
   )
 }
 

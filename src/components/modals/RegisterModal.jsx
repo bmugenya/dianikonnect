@@ -1,5 +1,7 @@
+import axios from 'axios'
 import useLoginModal from "../../hooks/useLoginModal";
 import useRegisterModal from "../../hooks/useRegisterModal";
+import { url } from "../../utils/url"
 
 import Modal from "./Modal";
 import Input from "../inputs/Input";
@@ -16,15 +18,36 @@ function RegisterModal() {
 const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
- const { register, handleSubmit } = useForm()
-const { error } = useSelector((state) => state.user)
+ const {
+        register, 
+        handleSubmit,  
+        formState: {
+          errors,
+        },
+     } = useForm({
+    defaultValues: {
+      name: '',
+      email: '',
+      password: ''
+    },
+  });
 
     const onSubmit = async (data) => {
-  
-      toast.success('Logged in');
+    setIsLoading(true);
 
-    }
-
+    axios.post(`${url}/register`, data)
+    .then(() => {
+      toast.success('Registered!');
+      registerModal.onClose();
+      loginModal.onOpen();
+    })
+    .catch((error) => {
+      toast.error(error);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    })
+  }
 
   const onToggle = useCallback(() => {
     registerModal.onClose();
@@ -42,7 +65,7 @@ const { error } = useSelector((state) => state.user)
         label="Email"
         disabled={isLoading}
         register={register}
-        errors={error}
+        errors={errors}
         required
       />
       <Input
@@ -50,7 +73,7 @@ const { error } = useSelector((state) => state.user)
         label="Name"
         disabled={isLoading}
         register={register}
-        errors={error}
+        errors={errors}
         required
       />
       <Input
@@ -59,7 +82,7 @@ const { error } = useSelector((state) => state.user)
         type="password"
         disabled={isLoading}
         register={register}
-        errors={error}
+        errors={errors}
         required
       />
     </div>

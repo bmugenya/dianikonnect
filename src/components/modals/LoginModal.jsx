@@ -1,11 +1,12 @@
 import useLoginModal from "../../hooks/useLoginModal";
+import useRegisterModal from "../../hooks/useRegisterModal";
 import { FcGoogle } from "react-icons/fc";
 import {  useState } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import { authUserAsync } from '../../features/user/userActions'
 import { useForm } from 'react-hook-form'
 import { toast } from "react-hot-toast";
-
+import { useCallback, useMemo } from "react";
 
 import Modal from "./Modal";
 import Input from "../inputs/Input";
@@ -19,7 +20,9 @@ function LoginModal() {
   const { error } = useSelector((state) => state.user)
   const { register, handleSubmit } = useForm()
   const dispatch = useDispatch()
-const loginModal = useLoginModal();
+  const loginModal = useLoginModal();
+  const registerModal = useRegisterModal(); 
+
     const onSubmit = async (data) => {
     const auth = await dispatch(authUserAsync(data))
     const error = auth?.error?.message
@@ -35,7 +38,10 @@ const loginModal = useLoginModal();
   }
 
 
-
+  const onToggle = useCallback(() => {
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [loginModal, registerModal])
 
 
   const bodyContent = (
@@ -78,7 +84,7 @@ const loginModal = useLoginModal();
       text-neutral-500 text-center mt-4 font-light">
         <p>First time using Diani Konnect?
           <span 
-            // onClick={onToggle} 
+            onClick={onToggle} 
             className="
               text-neutral-800
               cursor-pointer 

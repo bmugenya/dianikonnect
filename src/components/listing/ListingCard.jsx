@@ -14,12 +14,12 @@ function ListingCard({
 }) {
  
  let navigate = useNavigate();
-
+ console.log(data)
 
   return (
     <>
  <div 
-  onClick={() => navigate(`/listing/${data.id}`)} 
+  onClick={() => navigate(`/listing/${data?.id}`)} 
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col gap-2 w-full">
@@ -41,7 +41,7 @@ function ListingCard({
               group-hover:scale-110 
               transition
             "
-            src={data.image_src}
+            src={data?.image_src}
             alt="Listing"
           />
           <div className="
@@ -50,7 +50,7 @@ function ListingCard({
             right-3
           ">
             <HeartButton 
-              listingId={data.id} 
+              listingId={data?.id} 
               currentUser={currentUser}
             />
           </div>

@@ -4,7 +4,7 @@ function Logo() {
  let navigate = useNavigate();
 
   return (
-   
+   <>
     <img
       onClick={() => navigate('/')}
       className="hidden md:block cursor-pointer" 
@@ -13,7 +13,7 @@ function Logo() {
       width="100" 
       alt="Logo" 
     />
-    
+    </>
   )
 }
 

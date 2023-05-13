@@ -13,8 +13,8 @@ export default function useAuthListener() {
 
         if (token) {
           const payload = jwt_decode(token);
-          console.log(token)
-          setUser({ isAuthenticated: true,token:token,email:payload.email });
+          console.log(payload)
+          setUser({ isAuthenticated: true,token:token,user_id:payload.user_id });
         } else {
           setUser(null);
         }

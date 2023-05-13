@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { authUserAsync } from './userActions'
+import { authUserAsync, getCurrentUserAsync } from './userActions'
 
 const initialState = {
     error: null,
     user:null,
+    currentUser:null,
     isLoading: false,
 };
 
@@ -22,6 +23,18 @@ const userSlice = createSlice({
             })
 
             .addCase(authUserAsync.rejected, (state, { payload }) => {
+                state.isLoading = 'false';
+                state.error = payload;
+            })
+            .addCase(getCurrentUserAsync.pending, (state) => {
+                state.isLoading = 'true';
+            })
+            .addCase(getCurrentUserAsync.fulfilled, (state, { payload }) => {
+                state.isLoading = 'false';
+                state.currentUser = payload;
+            })
+
+            .addCase(getCurrentUserAsync.rejected, (state, { payload }) => {
                 state.isLoading = 'false';
                 state.error = payload;
             });

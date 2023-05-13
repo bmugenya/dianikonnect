@@ -1,12 +1,11 @@
-import useAuthListener from '../hooks/use-auth-listener'
 import { useDispatch, useSelector } from 'react-redux'
 import ListingCard from "./listing/ListingCard";
 import Container from "./Container";
 
-function Listing() {
-   const { listing } = useSelector((state) => state.listing)
+function Listing({listings}) {
+   
 
- const { user, loading } = useAuthListener()
+ const { currentUser } = useSelector((state) => state.currentUser)
 
   return (
     <>
@@ -26,9 +25,9 @@ function Listing() {
             gap-8
           "
         >
-    {listing?.map((listing) => (
+    {listings?.map((listing) => (
             <ListingCard
-              currentUser={user}
+              currentUser={currentUser}
               key={listing.id}
               data={listing}
             />

@@ -1,7 +1,6 @@
 import axios from 'axios'
-// import { url } from "./utils/url.js"
+import { url } from "../../utils/url"
 
-const url = 'https://dianikonnect.onrender.com'
 
 export const getListings = async () => {
     try {

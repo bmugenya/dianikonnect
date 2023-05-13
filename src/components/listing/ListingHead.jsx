@@ -14,8 +14,10 @@ function ListingHead({
   const { getByValue } = useCountries();
 
   const location = getByValue(locationValue);
+  console.log(locationValue)
+
+
   console.log(location)
-  
 
   return (
     <>

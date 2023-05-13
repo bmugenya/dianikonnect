@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { categories } from '../navbar/Categories';
 import useRentModal from '../../hooks/useRentModal';
 import Map from "../Map"
+import { url } from "../../utils/url"
 
 import Modal from "./Modal";
 import Input from "../inputs/Input";
@@ -68,7 +69,7 @@ function RentModal() {
   setIsLoading(true);
     console.log('d',data)
 
-    axios.post('https://dianikonnect.onrender.com/listings', data)
+    axios.post(`${url}/listings`, data)
     .then(() => {
       toast.success('Listing created!');
       router.refresh();

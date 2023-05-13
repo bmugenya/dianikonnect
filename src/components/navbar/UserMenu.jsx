@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import useRentModal from "../../hooks/useRentModal";
 import MenuItem from "./MenuItem";
 
-
+import { useNavigate } from "react-router-dom";
 
 function UserMenu({currentUser}) {
  
@@ -28,7 +28,7 @@ const registerModal = useRegisterModal();
     rentModal.onOpen();
   }, [loginModal, rentModal, currentUser]);
 
-
+ let navigate = useNavigate();
 
   return (
     <>
@@ -95,20 +95,13 @@ const registerModal = useRegisterModal();
               <>
                 <MenuItem 
                   label="My trips" 
-                  // onClick={() => router.push('/trips')}
+                   onClick={() => navigate('/trips')}
                 />
                 <MenuItem 
                   label="My favorites" 
-                  // onClick={() => router.push('/favorites')}
+                   onClick={() => navigate('/favorites')}
                 />
-                <MenuItem 
-                  label="My reservations" 
-                  // onClick={() => router.push('/reservations')}
-                />
-                <MenuItem 
-                  label="My properties" 
-                  // onClick={() => router.push('/properties')}
-                />
+  
                 <MenuItem 
                   label="Add a new Listing" 
                   onClick={rentModal.onOpen}

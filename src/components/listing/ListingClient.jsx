@@ -8,32 +8,38 @@ import Container from '../Container';
 import { categories } from "../navbar/Categories";
 import ListingReservation from "./ListingReservation";
 import { useCallback, useEffect, useMemo, useState } from "react";
-
-
-
+import { url } from "../../utils/url"
+import useLoginModal from "../../hooks/useLoginModal";
+import { differenceInDays, eachDayOfInterval } from 'date-fns';
+import { useDispatch, useSelector } from 'react-redux'
 const initialDateRange = {
   startDate: new Date(),
   endDate: new Date(),
   key: 'selection'
 };
 
+
+
+
 function ListingClient({
   listing,
-  reservations = [],
   currentUser
 }) {
+   const { reservations } = useSelector((state) => state.reservations)
 
    const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
    const [dateRange, setDateRange] = useState(initialDateRange);
+     const loginModal = useLoginModal();
+
 
   const disabledDates = useMemo(() => {
     let dates = [];
 
-    reservations.forEach((reservation) => {
+    reservations?.forEach((reservation) => {
       const range = eachDayOfInterval({
-        start: new Date(reservation.startDate),
-        end: new Date(reservation.endDate),
+        start: new Date(reservation.start_date),
+        end: new Date(reservation.end_date),
       });
 
       dates = [...dates, ...range];
@@ -48,9 +54,54 @@ function ListingClient({
   }, [listing.category]);
 
 
-    const onCreateReservation = () => {
+  const onCreateReservation = useCallback(() => {
+      if (!currentUser) {
+        return loginModal.onOpen();
+      }
+      setIsLoading(true);
 
+      axios.post(`${url}/reservation`, {
+        total_price:totalPrice,
+        start_date: dateRange.startDate,
+        end_date: dateRange.endDate,
+        listing_id: listing?.id,
+        user_id:currentUser?.id
+      })
+      .then(() => {
+        toast.success('Listing reserved!');
+        setDateRange(initialDateRange);
+
+      })
+      .catch(() => {
+        toast.error('Something went wrong.');
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
+  },
+  [
+    totalPrice, 
+    dateRange, 
+    listing?.id,
+    currentUser,
+    loginModal
+  ]);
+
+  useEffect(() => {
+    if (dateRange.startDate && dateRange.endDate) {
+      const dayCount = differenceInDays(
+        dateRange.endDate, 
+        dateRange.startDate
+      );
+      
+      if (dayCount && listing.price) {
+        setTotalPrice(dayCount * listing.price);
+      } else {
+        setTotalPrice(listing.price);
+      }
     }
+  }, [dateRange, listing.price]);
+
 
   return (
     <>
