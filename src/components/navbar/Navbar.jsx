@@ -6,8 +6,10 @@ import UserMenu from "./UserMenu";
 import { useSelector } from 'react-redux'
 
 
-function Navbar({ currentUser }) {
 
+function Navbar() {
+const { currentUser } = useSelector((state) => state.currentUser)
+  console.log('t',currentUser)
 
   return (
     <>

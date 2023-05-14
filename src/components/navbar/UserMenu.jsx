@@ -35,7 +35,7 @@ const registerModal = useRegisterModal();
  <div className="relative">
       <div className="flex flex-row items-center gap-3">
         <div 
-          onClick={onRent}
+         onClick={() => navigate('/listings')}
           className="
             hidden
             md:block
@@ -49,7 +49,7 @@ const registerModal = useRegisterModal();
             cursor-pointer
           "
         >
-          Add a new Listing
+          Listings
         </div>
         <div 
          onClick={toggleOpen}

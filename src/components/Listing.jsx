@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import ListingCard from "./listing/ListingCard";
 import Container from "./Container";
-
+import Categories from "./navbar/Categories";
 function Listing({listings}) {
    
 
@@ -9,8 +9,8 @@ function Listing({listings}) {
 
   return (
     <>
-    <div>
-    
+    <div  className="pt-24">
+      <Categories />
       <Container>
         <div 
           className="

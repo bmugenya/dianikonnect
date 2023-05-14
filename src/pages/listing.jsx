@@ -22,9 +22,6 @@ const dispatch = useDispatch();
   
     },[])
 
-
-
-
   return (
     <>
       <ListingClient

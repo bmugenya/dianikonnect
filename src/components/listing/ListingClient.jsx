@@ -110,6 +110,7 @@ function ListingClient({
         className="
           max-w-screen-lg 
           mx-auto
+          pt-28
         "
       >
         <div className="flex flex-col gap-6">

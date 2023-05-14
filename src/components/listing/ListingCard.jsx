@@ -14,7 +14,6 @@ function ListingCard({
 }) {
  
  let navigate = useNavigate();
- console.log(data)
 
   return (
     <>

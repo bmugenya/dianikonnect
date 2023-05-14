@@ -27,11 +27,7 @@ export const categories = [
     icon: TbBeach,
     description: 'This property is close to the beach!',
   },
-  {
-    label: 'Windmills',
-    icon: GiWindmill,
-    description: 'This property is has windmills!',
-  },
+
   {
     label: 'Modern',
     icon: MdOutlineVilla,
@@ -78,16 +74,7 @@ export const categories = [
     icon: GiForestCamp,
     description: 'This property offers camping activities!'
   },
-  {
-    label: 'Arctic',
-    icon: BsSnow,
-    description: 'This property is in arctic environment!'
-  },
-  {
-    label: 'Desert',
-    icon: GiCactus,
-    description: 'This property is in the desert!'
-  },
+
   {
     label: 'Barns',
     icon: GiBarn,

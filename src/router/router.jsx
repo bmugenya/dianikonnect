@@ -3,24 +3,29 @@ import Navbar from  '../components/navbar/Navbar'
 import LoginModal from  '../components/modals/LoginModal'
 import RegisterModal from '../components/modals/RegisterModal';
 import RentModal from '../components/modals/RentModal';
- import ToasterProvider from '../providers/ToasterProvider';
- import Listing from "../components/Listing";
-  import ListingPage from "../pages/listing";
-    import TripsPage from "../pages/trips";
-    import FavoritePage from "../pages/favorite";
+import ToasterProvider from '../providers/ToasterProvider';
+import Listing from "../components/Listing";
+import SearchModal from '../components/modals/SearchModal';
+import ListingPage from "../pages/listing";
+import HomePage from "../pages/home";
+import TripsPage from "../pages/trips";
+import FavoritePage from "../pages/favorite";
 import { BrowserRouter, Routes, Route,useNavigate } from 'react-router-dom'
- import Categories from "../components/navbar/Categories";
+
 import { useSelector, useDispatch } from 'react-redux'
 import { getCurrentUserAsync } from '../features/user/userActions'
 import useAuthListener from '../hooks/use-auth-listener'
 import { getListingsAsync } from "../features/listings/listingsActions";
+
+
+
+
 function Router() {
 
 const { user, loading } = useAuthListener()
+console.log(user)
 
-
- const dispatch = useDispatch();
-  const { currentUser } = useSelector((state) => state.currentUser)
+const dispatch = useDispatch();
 const { listings } = useSelector((state) => state.listings)
 
   useEffect(() => {
@@ -30,6 +35,8 @@ const { listings } = useSelector((state) => state.listings)
     }
   }, [dispatch, user]);
 
+
+
   return (
     <>
        <BrowserRouter>
@@ -37,18 +44,12 @@ const { listings } = useSelector((state) => state.listings)
     <LoginModal />
       <RegisterModal />
         <RentModal />
-   <Navbar currentUser={currentUser}/>
-   <div className="pb-20 pt-28">
+         <SearchModal />
+   <Navbar/>
+   <div className="pb-20">
       <Routes>
-
-      <Route path='/' element={
-        <>
-         <Categories />
-        <Listing listings={listings}/>
-        </>
-
-
-    } />
+      <Route path='/' element={<HomePage listings={listings}/>} />
+      <Route path='/listings' element={<Listing listings={listings}/>} />
        <Route path='/listing/:id' element={<ListingPage />} />
        <Route path='/trips' element={<TripsPage />} />
        <Route path='/favorites' element={<FavoritePage />} />

@@ -18,10 +18,12 @@ function TripsPage() {
 
   return (
     <>
+    <div className="pt-24">
       <TripsClient
         currentUser={currentUser}
         
       />
+      </div>
     </>
   )
 }
