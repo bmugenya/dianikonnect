@@ -56,7 +56,7 @@ function ImageUpload({
               <div className="
               absolute inset-0 w-full h-full">
                 <img
-                
+                  className="h-full w-full"
                   style={{ objectFit: 'cover' }} 
                   src={value} 
                   alt="House" 

@@ -101,6 +101,15 @@ const registerModal = useRegisterModal();
                   label="My favorites" 
                    onClick={() => navigate('/favorites')}
                 />
+
+                <MenuItem 
+                  label="My reservations" 
+                  onClick={() => navigate('/reservations')}
+                />
+                <MenuItem 
+                  label="My properties" 
+                  onClick={() => navigate('/properties')}
+                />
   
                 <MenuItem 
                   label="Add a new Listing" 

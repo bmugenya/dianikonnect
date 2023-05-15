@@ -2,6 +2,8 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useMemo, useState } from "react";
 import { categories } from '../navbar/Categories';
+import { amenities } from "../../utils/amenities"
+
 import useRentModal from '../../hooks/useRentModal';
 import Map from "../Map"
 import { url } from "../../utils/url"
@@ -17,15 +19,16 @@ import Heading from "../Heading";
 import Button from "../Button";
 import CategoryInput from '../inputs/CategoryInput';
 import { useForm } from 'react-hook-form';
-
+import { useSelector } from 'react-redux'
 
 const STEPS = {
 CATEGORY: 0,
-LOCATION: 1,
-INFO: 2,
-IMAGES: 3,
-DESCRIPTION: 4,
-PRICE: 5,
+AMENITIES:1,
+LOCATION: 2,
+INFO: 3,
+IMAGES: 4,
+DESCRIPTION: 5,
+PRICE: 6,
 };
 
 
@@ -35,6 +38,8 @@ function RentModal() {
  const rentModal = useRentModal();
  const [isLoading, setIsLoading] = useState(false);
  const [step, setStep] = useState(STEPS.CATEGORY);
+ const { currentUser } = useSelector((state) => state.currentUser)
+
 
   const onBack = () => {
     setStep((value) => value - 1);
@@ -72,8 +77,6 @@ function RentModal() {
     axios.post(`${url}/listings`, data)
     .then(() => {
       toast.success('Listing created!');
-      router.refresh();
-      reset();
       setStep(STEPS.CATEGORY)
       rentModal.onClose();
     })
@@ -97,10 +100,12 @@ function RentModal() {
   } = useForm({
     defaultValues: {
       category: '',
+      amenity:[],
       location_value: null,
       guest_count: 1,
       room_count: 1,
       bathroom_count: 1,
+      user_id:currentUser?.id,
       image_src: '',
       price: 1,
       title: '',
@@ -108,12 +113,28 @@ function RentModal() {
     }
   });
   const setCustomValue = (id, value) => {
+    setValue('user_id', currentUser?.id);
+    setValue('amenity', selectedAmenities)
     setValue(id, value, {
       shouldDirty: true,
       shouldTouch: true,
       shouldValidate: true
     })
   }
+
+
+
+
+  const [selectedAmenities, setSelectedAmenities] = useState([]);
+
+  const handleAmenityClick = (label) => {
+    if (selectedAmenities.includes(label)) {
+      setSelectedAmenities(selectedAmenities.filter((amenity) => amenity !== label));
+    } else {
+      setSelectedAmenities([...selectedAmenities, label]);
+    }
+  };
+
 
 
   const location_value = watch('location_value');
@@ -154,7 +175,43 @@ function RentModal() {
     </div>
   )
 
+   if (step === STEPS.AMENITIES) {
 
+bodyContent = (
+    <div className="flex flex-col gap-8">
+      <Heading
+        title="Which of these amenitis are available?"
+        subtitle="Pick available amenitis"
+      />
+      <div 
+        className="
+          grid 
+          grid-cols-1 
+          md:grid-cols-2 
+          gap-3
+          max-h-[50vh]
+          overflow-y-auto
+        "
+      >
+        {amenities.map((item) => (
+          <div key={item.label} className="col-span-1">
+            <CategoryInput
+              onClick={handleAmenityClick}
+              selected={selectedAmenities.includes(item.label)}
+              label={item.label}
+              icon={item.icon}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+
+
+
+
+
+}
   if (step === STEPS.LOCATION) {
     bodyContent = (
       <div className="flex flex-col gap-8">

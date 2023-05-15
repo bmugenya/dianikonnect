@@ -22,9 +22,9 @@ class User(db.Model,Updateable):
     updated_at = db.Column(db.DateTime, onupdate=datetime.now)
     favorite_ids = db.Column(db.String)
 
-    accounts = db.relationship('Account')
-    listings = db.relationship('Listing')
-    reservations = db.relationship('Reservation')
+    accounts = db.relationship('Account', back_populates='user')
+    listings = db.relationship('Listing', back_populates='user')
+    reservations = db.relationship('Reservation', back_populates='user')
 
     @property
     def avatar_url(self):
@@ -59,8 +59,7 @@ class User(db.Model,Updateable):
             'updated_at':self.updated_at,
             'favorite_ids':self.favorite_ids,
             'accounts':self.accounts,
-            'listings':self.listings,
-            'reservations':self.reservations,
+            'listings':self.listings
 
         }
 
@@ -83,8 +82,19 @@ class Account(db.Model,Updateable):
     id_token = db.Column(db.String)
     session_state = db.Column(db.String)
 
-    user = db.relationship('User')
+    user = db.relationship('User', back_populates='accounts')
 
+
+
+
+class Image(db.Model):
+    __tablename__ = 'images'
+
+    id = db.Column(db.Integer, primary_key=True)
+    listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
+    image_src = db.Column(db.String)
+
+    listing = db.relationship('Listing', back_populates='images')
 
 class Listing(db.Model,Updateable):
     __tablename__ = 'listings'
@@ -95,6 +105,7 @@ class Listing(db.Model,Updateable):
     image_src = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.now)
     category = db.Column(db.String)
+    amenity = db.Column(db.String)
     room_count = db.Column(db.Integer)
     bathroom_count = db.Column(db.Integer)
     guest_count = db.Column(db.Integer)
@@ -103,7 +114,8 @@ class Listing(db.Model,Updateable):
     price = db.Column(db.Integer)
 
     user = db.relationship('User')
-    reservations = db.relationship('Reservation')
+    reservations = db.relationship('Reservation', back_populates='listing')
+    images = db.relationship('Image', back_populates='listing')
 
     def __repr__(self):
         return '<Listing {}>'.format(self.title)
@@ -121,6 +133,7 @@ class Listing(db.Model,Updateable):
             'image_src': self.image_src,
             'created_at':self.created_at,
             'category':self.category,
+            'amenity':self.amenity,
             'room_count':self.room_count,
             'bathroom_count':self.bathroom_count,
             'guest_count':self.guest_count,
@@ -143,11 +156,36 @@ class Reservation(db.Model,Updateable):
     total_price = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
-    user = db.relationship('User')
+    user = db.relationship('User', back_populates='reservations')
     listing = db.relationship('Listing')
 
+    def __repr__(self):
+        return '<Reservation {}>'.format(self.id)
+
+    @property
+    def url(self):
+        return url_for('reservations.get', id=self.id)
+
+    @property
+    def duration(self):
+        if self.start_date and self.end_date:
+            return self.end_date - self.start_date
+        return None
 
 
+    def serialize(self):
+        return {
+            'id':self.id,
+            'user_id': self.user_id,
+            'listing_id': self.listing_id,
+            'start_date': self.start_date,
+            'end_date':self.end_date,
+            'duration': self.duration.days if self.duration else None,
+            'total_price':self.total_price,
+            'created_at':self.created_at,
+            'listing': self.listing if self.listing else None
 
+
+        }
 
 

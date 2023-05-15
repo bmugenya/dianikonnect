@@ -42,13 +42,12 @@ def login():
 
     # User is authenticated, return success response
     token = create_auth_token(user.id)
-    return jsonify({'message': 'Login successful', 'user_id': user.id,'token': token}), 200
+    return jsonify({'message': 'Login successful', 'user': user.id,'token': token}), 200
  
 
 
-@users.route('/user', methods=['GET'])
-def get_user():
-    id = request.args.get('id')
+@users.route('/user/<int:id>', methods=['GET'])
+def get_user(id):
     user = User.query.filter_by(id=id).first()
     if user is not None:
         print(user)

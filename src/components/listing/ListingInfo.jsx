@@ -14,11 +14,13 @@ function ListingInfo({
   roomCount,
   bathroomCount,
   category,
+  amenity,
   locationValue,
 }) {
     const { getByValue } = useCountries();
 
   const coordinates = getByValue(locationValue)?.latlng
+  console.log(amenity)
 
 
 
@@ -60,6 +62,7 @@ function ListingInfo({
         </div>
       </div>
       <hr />
+
       {category && (
         <ListingCategory
           icon={category.icon} 
@@ -72,6 +75,29 @@ function ListingInfo({
       text-lg font-light text-neutral-500">
         {description}
       </div>
+      <hr />
+           <div
+      className="
+        pt-6
+          grid 
+          grid-cols-1 
+          md:grid-cols-2 
+          gap-3
+          max-h-[50vh]
+          overflow-y-auto
+        "
+      >
+{amenity && amenity.map((item) => (
+    <div key={item.label} className="col-span-1">
+  <ListingCategory
+    key={item.label}
+    icon={item.icon} 
+    label={item.label}
+    description={item.description} 
+  />
+  </div>
+))}
+</div>
       <hr />
       <Map center={coordinates} />
     </div>

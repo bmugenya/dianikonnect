@@ -6,6 +6,8 @@ import ListingHead from "./ListingHead";
 import ListingInfo from "./ListingInfo";
 import Container from '../Container';
 import { categories } from "../navbar/Categories";
+import { amenities } from "../../utils/amenities"
+
 import ListingReservation from "./ListingReservation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { url } from "../../utils/url"
@@ -26,6 +28,7 @@ function ListingClient({
   currentUser
 }) {
    const { reservations } = useSelector((state) => state.reservations)
+
 
    const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
@@ -52,6 +55,18 @@ function ListingClient({
      return categories.find((items) => 
       items.label === listing.category);
   }, [listing.category]);
+
+const amenity = useMemo(() => {
+  if (listing && listing.amenity && typeof listing.amenity === 'string') {
+    const amenityArray = JSON.parse(listing.amenity);
+    if (Array.isArray(amenityArray)) {
+      return amenityArray.map((item) => {
+        return amenities.find((amenity) => amenity.label === item);
+      });
+    }
+  }
+  return [];
+}, [listing, amenities]);
 
 
   const onCreateReservation = useCallback(() => {
@@ -133,6 +148,7 @@ function ListingClient({
            <ListingInfo
               user={listing['user']}
               category={category}
+              amenity={amenity}
    
               description={listing['description']}
               roomCount={listing['room_count']}
