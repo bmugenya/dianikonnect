@@ -29,7 +29,7 @@ function LoginModal() {
     
     if(!error){
       toast.success('Logged in');
-      setOpen(false)
+      loginModal.onClose();
 
     }else{
       toast.error(error);

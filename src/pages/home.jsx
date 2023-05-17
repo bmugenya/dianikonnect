@@ -4,9 +4,9 @@ import Button from "../components/Button";
 import ListingCard from "../components/listing/ListingCard";
 import { useDispatch, useSelector } from 'react-redux'
 import { amenities } from "../utils/amenities"
+import Loader from "../components/Loader"
 
-
-function HomePage({listings}) {
+function HomePage({listings ,isLoading}) {
 
  const { currentUser } = useSelector((state) => state.currentUser)
 
@@ -61,18 +61,20 @@ function HomePage({listings}) {
  <section className="pt-24">
 <h2 className="text-4xl font-semibold pb-5">Live Anywhere</h2>
       
-        <div 
+              <div 
           className="
-            pt-6
-            grid 
-            grid-cols-1 
-            sm:grid-cols-2 
-            md:grid-cols-3 
-            lg:grid-cols-3
-            xl:grid-cols-3
-            gap-4
+      flex
+      space-x-3
+      overflow-scroll
+
           "
         >
+
+                 {isLoading === true ?
+
+         <Loader />
+:
+              <>
     {listings?.map((listing) => (
             <ListingCard
               currentUser={currentUser}
@@ -82,8 +84,9 @@ function HomePage({listings}) {
           ))}
 
 
+</>}
+
      </div>
-   
  </section>
 
 

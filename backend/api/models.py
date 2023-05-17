@@ -59,7 +59,6 @@ class User(db.Model,Updateable):
             'updated_at':self.updated_at,
             'favorite_ids':self.favorite_ids,
             'accounts':self.accounts,
-            'listings':self.listings
 
         }
 
@@ -94,7 +93,7 @@ class Image(db.Model):
     listing_id = db.Column(db.Integer, db.ForeignKey('listings.id'))
     image_src = db.Column(db.String)
 
-    listing = db.relationship('Listing', back_populates='images')
+    listings = db.relationship('Listing', back_populates='images')
 
 class Listing(db.Model,Updateable):
     __tablename__ = 'listings'
@@ -113,9 +112,9 @@ class Listing(db.Model,Updateable):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     price = db.Column(db.Integer)
 
-    user = db.relationship('User')
-    reservations = db.relationship('Reservation', back_populates='listing')
-    images = db.relationship('Image', back_populates='listing')
+    user = db.relationship('User', back_populates='listings')
+    reservations = db.relationship('Reservation', back_populates='listings')
+    images = db.relationship('Image', back_populates='listings')
 
     def __repr__(self):
         return '<Listing {}>'.format(self.title)
@@ -157,7 +156,7 @@ class Reservation(db.Model,Updateable):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     user = db.relationship('User', back_populates='reservations')
-    listing = db.relationship('Listing')
+    listings = db.relationship('Listing', back_populates='reservations')
 
     def __repr__(self):
         return '<Reservation {}>'.format(self.id)

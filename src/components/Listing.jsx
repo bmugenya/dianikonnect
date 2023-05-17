@@ -2,8 +2,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import ListingCard from "./listing/ListingCard";
 import Container from "./Container";
 import Categories from "./navbar/Categories";
-function Listing({listings}) {
-   
+import Loader from "./Loader"
+
+function Listing({listings,isLoading }) {
+   console.log(isLoading)
 
  const { currentUser } = useSelector((state) => state.currentUser)
 
@@ -25,6 +27,11 @@ function Listing({listings}) {
             gap-8
           "
         >
+         {isLoading === true ?
+
+         <Loader />
+:
+              <>
     {listings?.map((listing) => (
             <ListingCard
               currentUser={currentUser}
@@ -32,6 +39,8 @@ function Listing({listings}) {
               data={listing}
             />
           ))}
+
+</>}
         </div>
       </Container>
     </div>
