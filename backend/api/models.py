@@ -2,7 +2,7 @@ from api import db
 from datetime import datetime, timedelta
 from time import time
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from hashlib import md5
 
 class Updateable:
     def update(self, data):
@@ -59,6 +59,7 @@ class User(db.Model,Updateable):
             'updated_at':self.updated_at,
             'favorite_ids':self.favorite_ids,
             'accounts':self.accounts,
+            'avatar_url': self.avatar_url
 
         }
 
@@ -94,6 +95,13 @@ class Image(db.Model):
     image_src = db.Column(db.String)
 
     listings = db.relationship('Listing', back_populates='images')
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'listing_id': self.listing_id,
+            'image_src': self.image_src
+        }
 
 class Listing(db.Model,Updateable):
     __tablename__ = 'listings'
@@ -138,6 +146,7 @@ class Listing(db.Model,Updateable):
             'guest_count':self.guest_count,
             'location_value':self.location_value,
             'price':self.price,
+            'user': self.user.serialize() if self.user else None 
 
         }
 
@@ -182,7 +191,7 @@ class Reservation(db.Model,Updateable):
             'duration': self.duration.days if self.duration else None,
             'total_price':self.total_price,
             'created_at':self.created_at,
-            'listing': self.listing if self.listing else None
+            'listings': self.listings.serialize() if self.listings else None
 
 
         }

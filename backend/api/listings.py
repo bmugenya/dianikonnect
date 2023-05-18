@@ -45,14 +45,15 @@ def get_listing():
 
 @listings.route('/listing/<int:id>', methods=['GET'])
 def get_single_listing(id):
-
     listing = Listing.query.filter_by(id=id).first()
     if listing:
-        print(listing.serialize())
-        return jsonify(listing.serialize()), 200
+        listing_data = listing.serialize()
+        images = Image.query.filter_by(listing_id=listing.id).all()
+        listing_data['images'] = [image.serialize() for image in images]
+        print(listing_data)
+        return jsonify(listing_data), 200
     else:
         return jsonify({'message': 'No listings available'}), 404
-
 
 
 @listings.route('/favorite/<int:id>/<int:current_id>', methods=['POST'])
@@ -132,3 +133,18 @@ def get_favorites(id):
     return jsonify({'error': 'User not found'}), 404
 
 
+@listings.route('/upload/images', methods=['POST'])
+def upload_images():
+    data = request.get_json()
+    print(data)
+    if not data:
+        return jsonify({'msg': 'Missing JSON'}), 400
+
+
+    images = Image(**data)
+    db.session.add(images)
+    db.session.commit()
+
+    db.session.commit()
+
+    return jsonify({'message': 'Image Uploaded successfully'})

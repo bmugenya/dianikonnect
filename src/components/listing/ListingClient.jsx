@@ -14,6 +14,7 @@ import { url } from "../../utils/url"
 import useLoginModal from "../../hooks/useLoginModal";
 import { differenceInDays, eachDayOfInterval } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux'
+
 const initialDateRange = {
   startDate: new Date(),
   endDate: new Date(),
@@ -21,19 +22,20 @@ const initialDateRange = {
 };
 
 
+function ListingClient({listing, currentUser}) {
+  const { reservations } = useSelector((state) => state.reservations)
 
 
-function ListingClient({
-  listing,
-  currentUser
-}) {
-   const { reservations } = useSelector((state) => state.reservations)
-
-
-   const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
-   const [dateRange, setDateRange] = useState(initialDateRange);
-     const loginModal = useLoginModal();
+  const [dateRange, setDateRange] = useState(initialDateRange);
+  
+
+  const loginModal = useLoginModal();
+
+
+console.log(listing)
+
 
 
   const disabledDates = useMemo(() => {
@@ -118,6 +120,13 @@ const amenity = useMemo(() => {
   }, [dateRange, listing.price]);
 
 
+
+  const images = listing.images || [];
+  const imageSrcList = [listing.image_src, ...images.map(image => image.image_src)];
+
+
+
+
   return (
     <>
  <Container>
@@ -131,7 +140,7 @@ const amenity = useMemo(() => {
         <div className="flex flex-col gap-6">
           <ListingHead
             title={listing['title']}
-            imageSrc={listing['image_src']}
+            imageSrc={imageSrcList}
             locationValue={listing['location_value']}
             id={listing['id']}
             currentUser={currentUser}

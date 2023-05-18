@@ -5,11 +5,9 @@ import Search from "./Search";
 import UserMenu from "./UserMenu";
 import { useSelector } from 'react-redux'
 
-
-
 function Navbar() {
 const { currentUser } = useSelector((state) => state.currentUser)
-  console.log('t',currentUser)
+
 
   return (
     <>
@@ -36,8 +34,10 @@ const { currentUser } = useSelector((state) => state.currentUser)
           <UserMenu currentUser={currentUser}/>
         </div>
       </Container>
+      
+
     </div>
-   
+  
   </div>
     </>
   )

@@ -5,18 +5,18 @@ import Categories from "./navbar/Categories";
 import Loader from "./Loader"
 
 function Listing({listings,isLoading }) {
-   console.log(isLoading)
+
 
  const { currentUser } = useSelector((state) => state.currentUser)
 
   return (
     <>
-    <div  className="pt-24">
-      <Categories />
       <Container>
+         <div className="pt-24">
+  <Categories />
         <div 
           className="
-            pt-24
+        
             grid 
             grid-cols-1 
             sm:grid-cols-2 
@@ -42,8 +42,9 @@ function Listing({listings,isLoading }) {
 
 </>}
         </div>
+         </div>
       </Container>
-    </div>
+
     </>
   )
 }

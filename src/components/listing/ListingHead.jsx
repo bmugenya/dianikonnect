@@ -2,7 +2,9 @@ import HeartButton from "../HeartButton";
 import Button from "../Button";
 import useCountries from "../../hooks/useCountries";
 import Heading from "../Heading";
-
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import {  useState } from "react";
 function ListingHead({
   title,
   locationValue,
@@ -15,15 +17,22 @@ function ListingHead({
 
   const location = getByValue(locationValue);
 
+  const [selectedImage, setSelectedImage] = useState(0);
+
+  const handleImageChange = (selectedIndex) => {
+    setSelectedImage(selectedIndex);
+  };
+
+  console.log(setSelectedImage)
 
   return (
     <>
- <Heading
+      <Heading
         title={title}
-        subtitle={`${locationValue?.region}, ${locationValue?.label}`}
-   
+        subtitle='Africa, Kenya'
       />
-      <div className="
+      <div
+        className="
           w-full
           h-[60vh]
           overflow-hidden 
@@ -31,12 +40,19 @@ function ListingHead({
           relative
         "
       >
-        <img
-          src={imageSrc}
- 
-          className="object-cover w-full"
-          alt="Image"
-        />
+        <Carousel
+          selectedItem={selectedImage}
+          onChange={handleImageChange}
+          showThumbs={false}
+          showIndicators={false}
+          infiniteLoop={true}
+        >
+          {imageSrc.map((src, index) => (
+            <div key={index}>
+              <img src={src} alt="Image" className="object-cover w-full" />
+            </div>
+          ))}
+        </Carousel>
         <div
           className="
             absolute
@@ -44,10 +60,7 @@ function ListingHead({
             right-5
           "
         >
-          <HeartButton 
-            listingId={id}
-            currentUser={currentUser}
-          />
+          <HeartButton listingId={id} currentUser={currentUser} />
         </div>
       </div>
 

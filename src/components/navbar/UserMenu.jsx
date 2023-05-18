@@ -30,6 +30,8 @@ const registerModal = useRegisterModal();
 
  let navigate = useNavigate();
 
+
+
   return (
     <>
  <div className="relative">
@@ -71,7 +73,7 @@ const registerModal = useRegisterModal();
         >
           <AiOutlineMenu />
           <div className="hidden md:block">
-            <Avatar src={currentUser?.image} />
+            <Avatar src={currentUser?.avatar_url} />
           </div>
         </div>
       </div>
@@ -102,10 +104,6 @@ const registerModal = useRegisterModal();
                    onClick={() => navigate('/favorites')}
                 />
 
-                <MenuItem 
-                  label="My reservations" 
-                  onClick={() => navigate('/reservations')}
-                />
                 <MenuItem 
                   label="My properties" 
                   onClick={() => navigate('/properties')}

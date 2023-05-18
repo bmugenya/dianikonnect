@@ -18,10 +18,14 @@ function ListingInfo({
   locationValue,
 }) {
     const { getByValue } = useCountries();
+    // const locationObject = JSON.parse(locationValue);
+    console.log(locationValue)
 
-  const coordinates = getByValue(locationValue)?.latlng
-  console.log(amenity)
+   const coordinates =  [1, 38]
+    
+    
 
+  // console.log(coordinates)
 
 
   return (

@@ -95,12 +95,7 @@ function Categories() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const category = searchParams.get('category');
-  const isMainPage = location.pathname === '/';
 
-  if (!isMainPage) {
-    return null;
-  }
- 
 
   return (
     <>

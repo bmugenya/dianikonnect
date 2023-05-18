@@ -60,33 +60,23 @@ function HomePage({listings ,isLoading}) {
 
  <section className="pt-24">
 <h2 className="text-4xl font-semibold pb-5">Live Anywhere</h2>
-      
-              <div 
-          className="
-      flex
-      space-x-3
-      overflow-scroll
+  
+<div className="pt-6 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+  {!listings ? (
+    <Loader />
+  ) : (
+    <>
+      {listings?.slice(0, 6).map((listing) => (
+        <ListingCard
+          currentUser={currentUser}
+          key={listing.id}
+          data={listing}
+        />
+      ))}
+    </>
+  )}
+</div>
 
-          "
-        >
-
-                 {isLoading === true ?
-
-         <Loader />
-:
-              <>
-    {listings?.map((listing) => (
-            <ListingCard
-              currentUser={currentUser}
-              key={listing.id}
-              data={listing}
-            />
-          ))}
-
-
-</>}
-
-     </div>
  </section>
 
 
