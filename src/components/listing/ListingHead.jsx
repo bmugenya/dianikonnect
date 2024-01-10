@@ -49,7 +49,7 @@ function ListingHead({
         >
           {imageSrc.map((src, index) => (
             <div key={index}>
-              <img src={src} alt="Image" className="object-cover w-full" />
+              <img src={src} alt="Image" className="object-cover w-full h-full" />
             </div>
           ))}
         </Carousel>
